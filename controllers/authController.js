@@ -1,7 +1,5 @@
-// ============================
-// File: controllers/authController.js
-// ============================
 const User = require("../models/User");
+const sendEmail = require('../utils/sendEmail');
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
@@ -14,6 +12,13 @@ exports.signup = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+await sendEmail(
+  newUser.email,
+  "Welcome to Task Manager API",
+  `<h2>Hello ${newUser.name}</h2><p>Your registration was successful!</p>`
+);
+
 
 exports.login = async (req, res) => {
   try {
