@@ -1,24 +1,24 @@
 const User = require("../models/User");
-const sendEmail = require('../utils/sendEmail');
+const sendEmail = require("../utils/sendEmail");
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     const user = await User.create({ name, email, password });
+
+    await sendEmail(
+      newUser.email,
+      "Welcome to Task Manager API",
+      `<h2>Hello ${newUser.name}</h2><p>Your registration was successful!</p>`
+    );
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.status(201).json({ message : "User Created." });
+    res.status(201).json({ message: "User Created." });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
-await sendEmail(
-  newUser.email,
-  "Welcome to Task Manager API",
-  `<h2>Hello ${newUser.name}</h2><p>Your registration was successful!</p>`
-);
-
 
 exports.login = async (req, res) => {
   try {
