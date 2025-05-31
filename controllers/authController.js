@@ -8,9 +8,9 @@ exports.signup = async (req, res) => {
     const user = await User.create({ name, email, password });
 
     await sendEmail(
-      newUser.email,
+      user.email,
       "Welcome to Task Manager API",
-      `<h2>Hello ${newUser.name}</h2><p>Your registration was successful!</p>`
+      `<h2>Hello ${user.name}</h2><p>Your registration was successful!</p>`
     );
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
